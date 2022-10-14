@@ -18,18 +18,36 @@ try {
     $dbh = new PDO($dsn, $user, $pass);
     echo "连接成功<br/>";
 
+    $data = [];
     $i = 0;
+    $db_select = ['karenty_com','buridal_com','bridany_com','naclari_com','tareken_com','helenue_com','paricen_com','sariaen_com','yobouet_com','karsony_com'];
 	foreach ($dbh->query('SHOW DATABASES') as $row) {
 		if($row['Database'] == 'information_schema' || $row['Database'] == 'mysql' || $row['Database'] == 'performance_schema'){
 			continue;
 		}
-        $sql="update ".$row['Database'].".product set price = CEILING(price) where 1;";
-		$sql.="update ".$row['Database'].".product_special set price = CEILING(price) where 1;";
-		$dbh->query($sql);
+        //update
+        //$sql="update ".$row['Database'].".product set price = CEILING(price) where 1;";
+		//$sql.="update ".$row['Database'].".product_special set price = CEILING(price) where 1;";
+        //
+        //select
+        if(in_array($row['Database'],$db_select)){
+            $sql="select product_id from ".$row['Database'].".product  where status=1 order by product_id desc limit 10;";
+            $q = $dbh->query($sql);
+            if($q){
+                $arr = [];
+                while ($r = $q->fetch(PDO::FETCH_ASSOC)){
+                    $arr[] = $r['product_id'];
+                }
+                $data[$row['Database']] = implode(',',$arr);
+            }
+        }
+
         $i++;
 		echo $i.' --- '.$row['Database'].' successed<br>';
     }
-
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
     $dbh = null;
 } catch (PDOException $e) {
     die ("Error!: " . $e->getMessage() . "<br/>");
