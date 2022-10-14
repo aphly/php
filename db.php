@@ -20,7 +20,7 @@ try {
 
     $data = [];
     $i = 0;
-    $db_select = ['karenty_com','buridal_com','bridany_com','naclari_com','tareken_com','helenue_com','paricen_com','sariaen_com','yobouet_com','karsony_com'];
+    $db_select = [];
 	foreach ($dbh->query('SHOW DATABASES') as $row) {
 		if($row['Database'] == 'information_schema' || $row['Database'] == 'mysql' || $row['Database'] == 'performance_schema'){
 			continue;
