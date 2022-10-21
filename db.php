@@ -1,5 +1,5 @@
 <?php
-
+include_once 'func.php';
 $dbms='mysql';     //数据库类型
 $host='localhost'; //数据库主机名
 $dbName='';    //使用的数据库
@@ -30,12 +30,12 @@ try {
 		//$sql.="update ".$row['Database'].".product_special set price = CEILING(price) where 1;";
         //
         //select
-        if(in_array($row['Database'],$db_select)){
+        if(in_array($row['Database'],$db_select) || 1){
             $sql="select product_id from ".$row['Database'].".product  where status=1 order by product_id desc limit 10;";
             $q = $dbh->query($sql);
             if($q){
                 $arr = [];
-                while ($r = $q->fetch(PDO::FETCH_ASSOC)){
+                while ($r = $q->fetch()){
                     $arr[] = $r['product_id'];
                 }
                 $data[$row['Database']] = implode(',',$arr);
@@ -47,7 +47,7 @@ try {
     }
     echo '<pre>';
     var_dump($data);
-    echo '</pre>';
+    echo '</pre><br>';
     $dbh = null;
 } catch (PDOException $e) {
     die ("Error!: " . $e->getMessage() . "<br/>");
