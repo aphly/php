@@ -1,0 +1,14 @@
+#!/bin/bash
+
+HOSTNAME="localhost"
+PORT="3306"
+USERNAME=""
+PASSWORD=""
+DBNAME=""
+NUM1=$(($RANDOM%(150-90)+90))
+NUM2=$(($RANDOM%(22-5)+5))
+NUM3=$(($RANDOM%(20-2)+2))
+NUM4=$(($RANDOM%2+95))
+
+SQL="update ${DBNAME}.record set amount=amount+${NUM1},usernum=usernum+${NUM2},gysnum=gysnum+${NUM3},sitenum=${NUM4} where id = 1;"
+mysql -h${HOSTNAME}  -P${PORT}  -u${USERNAME} -p${PASSWORD} -e "${SQL}"
